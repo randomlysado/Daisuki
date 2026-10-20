@@ -1,0 +1,7 @@
+Program in Java 11
+
+
+3 players
+11 columns
+highest score per column gets the point
+ties = no points for anyone
