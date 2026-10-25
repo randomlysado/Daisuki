@@ -3,9 +3,8 @@ package daisuki;
 import java.util.Scanner;
 import java.util.Random;
 class Player{
-    String name;
-    int playerNum;
-    int score;
+    String name = "";
+    int score = 0;
     
 }
 class Scoreboard{
@@ -95,14 +94,14 @@ class Scoreboard{
         
         
         for(int x = 1;x<=3;x++){
-            if(table[x][pointPos].equals("")) return false;
+            if(table[x][pointPos - 1].equals("")) return false;
         }
         return true;
         
     
     }
     void completeCol(int pointPos, Player[] p){
-               
+        pointPos = getPointPos(pointPos);
         int player1Point = Integer.valueOf(table[1][pointPos]);
         int player2Point = Integer.valueOf(table[2][pointPos]);
         int player3Point = Integer.valueOf(table[3][pointPos]);
@@ -117,28 +116,26 @@ class Scoreboard{
             return;
         }
         //Looks for highest dice roll
-        if(player1Point > player2Point){highestPoint = player1Point; highestPos = 1;}
-        else{highestPoint=player2Point; highestPos = 2;}
-        if(player3Point > highestPoint ){highestPoint = player3Point; highestPos = 3;}
+        if(player1Point > player2Point){System.out.println("Player 1 Won");highestPoint = player1Point; highestPos = 1;}
+        else{System.out.println("Player 2 Won");highestPoint=player2Point; highestPos = 2;}
+        if(player3Point > highestPoint ){System.out.println("Player 3 Won");highestPoint = player3Point; highestPos = 3;}
         
-       p[highestPos -1].score += Integer.valueOf(table[0][pointPos]);
-        
+        System.out.println(p[highestPos -1].name+" Score: "+ p[highestPos -1].score);
+        p[highestPos -1].score += Integer.valueOf(table[0][pointPos]);
+        System.out.println(p[highestPos -1].name+" Score: "+ p[highestPos -1].score);
       
-        table[highestPos][12] = String.valueOf(p[highestPos].score);
-        System.out.println(p[highestPos].name+" just scored " +table[0][pointPos]+" points");
-        System.out.println("Bringing them to a total of "+ p[highestPos].score);
+        table[highestPos][12] = String.valueOf(p[highestPos - 1].score);
+        System.out.println(p[highestPos - 1].name+" just scored " +table[0][pointPos]+" points");
+        System.out.println("Bringing them to a total of "+ p[highestPos - 1].score);
       
     }
-    
-    
-  
     boolean checkPointFilled(Player p, int point){
             int pointpos = getPointPos(point);
             int playerpos = getPlayerPos(p);
         return !table[playerpos][pointpos].equals("");
     
     }
-      int getPlayerPos(Player p){
+    int getPlayerPos(Player p){
         int pos;
         for(int x = 1; x<=3; x++){
             if(p.name.equals(table[x][0])){
@@ -148,7 +145,7 @@ class Scoreboard{
         }
         return 0;
     }
-       int getPointPos(int point){
+    int getPointPos(int point){
         int pos;
         for(int x = 1; x<12; x++){
             if(String.valueOf(point).equals(table[0][x])){
@@ -166,7 +163,7 @@ class Scoreboard{
 
 
 public class Daisuki {
-          static Player[] player = new Player[3];
+    public static Player[] player = new Player[3];
 
     public static void main(String[] args) {
        Scanner sc = new Scanner(System.in);
@@ -195,7 +192,7 @@ public class Daisuki {
             }
         }while (select != "A");
     }
-       static void rules(){ //displays Rules
+    static void rules(){ //displays Rules
         System.out.println("");
         System.out.println("How To Play:");
         System.out.println("* This game requires 3 players");
@@ -275,14 +272,10 @@ public class Daisuki {
                 if(tbl.checkColFilled(selectPoint)) tbl.completeCol(selectPoint,player);
 
                 tbl.display();
-                
-               
-                
-                
             }
         } 
     }
-     static void autofillName(Player[] players){
+    static void autofillName(Player[] players){
          players[0].name ="Percy";
          players[1].name ="Jackson";
          players[2].name="Martha";
