@@ -87,7 +87,6 @@ class Scoreboard{
         int pointPos = getPointPos(point);
         int playerPos = getPlayerPos(p);
         table[playerPos][pointPos] = String.valueOf(roll);
-         if(checkColFilled(pointPos)) completeCol(pointPos,p);
           
           
           
@@ -102,7 +101,7 @@ class Scoreboard{
         
     
     }
-    void completeCol(int pointPos, Player p){
+    void completeCol(int pointPos, Player[] p){
                
         int player1Point = Integer.valueOf(table[1][pointPos]);
         int player2Point = Integer.valueOf(table[2][pointPos]);
@@ -122,11 +121,12 @@ class Scoreboard{
         else{highestPoint=player2Point; highestPos = 2;}
         if(player3Point > highestPoint ){highestPoint = player3Point; highestPos = 3;}
         
+       p[highestPos -1].score += Integer.valueOf(table[0][pointPos]);
         
-        p.score += Integer.valueOf(table[0][pointPos]);
-        table[highestPos][12] = String.valueOf(p.score);
-        System.out.println(p.name+" just scored " +table[0][pointPos]+" points");
-        System.out.println("Bringing them to a total of "+ p.score);
+      
+        table[highestPos][12] = String.valueOf(p[highestPos].score);
+        System.out.println(p[highestPos].name+" just scored " +table[0][pointPos]+" points");
+        System.out.println("Bringing them to a total of "+ p[highestPos].score);
       
     }
     
@@ -166,9 +166,8 @@ class Scoreboard{
 
 
 public class Daisuki {
-    /**
-     * @param args the command line arguments
-     */
+          static Player[] player = new Player[3];
+
     public static void main(String[] args) {
        Scanner sc = new Scanner(System.in);
         String select; // users selected menu option
@@ -211,7 +210,6 @@ public class Daisuki {
         Random rnd = new Random();
         int[] dice = new int[2];
       Scoreboard tbl = new Scoreboard();
-      Player[] player = new Player[3];
       for(int x = 0; x<3; x++){
           player[x] = new Player();
       }
@@ -269,12 +267,13 @@ public class Daisuki {
                         break;
                     }catch(Exception e){
                         System.out.println("Invalid Option!");
-                        System.out.println(e);
                         System.out.println("Pick a Number from the top row.");
                         System.out.println("");
                     }
                 }
                 tbl.enterRoll(player[turn], selectPoint, (dice[0]+dice[1]));
+                if(tbl.checkColFilled(selectPoint)) tbl.completeCol(selectPoint,player);
+
                 tbl.display();
                 
                
