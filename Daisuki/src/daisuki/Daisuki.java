@@ -163,7 +163,7 @@ class Scoreboard{
 
 
 public class Daisuki {
-    public static Player[] player = new Player[3];
+    static Player[] player = new Player[3];
 
     public static void main(String[] args) {
        Scanner sc = new Scanner(System.in);
@@ -273,7 +273,30 @@ public class Daisuki {
 
                 tbl.display();
             }
-        } 
+            
+            
+            if(player[0].score == player[1].score && player[0].score == player[2].score && player[2].score == player[1].score){
+                System.out.println("Round "+round+" has ended in a draw");
+                System.out.println("Don't be discourgaged, it's still anyones game!");
+            }else{
+                    displayHighestPlayerScore();
+                 }
+        }
+        
+        
+    }
+    static void displayHighestPlayerScore(){
+        int highestPoint;
+        int highestPos;
+        
+        
+        if(player[0].score > player[1].score){System.out.println("Player 1 Won");highestPoint = player[0].score;highestPos = 0;}
+        else{System.out.println("Player 2 Won");highestPoint=player[1].score;highestPos = 1;}
+        if(player[2].score > highestPoint ){System.out.println("Player 3 Won");highestPoint = player[2].score;highestPos = 2;}
+        
+        System.out.println(player[highestPos].name +" is in the lead with "+highestPoint+" points");
+        
+        
     }
     static void autofillName(Player[] players){
          players[0].name ="Percy";
